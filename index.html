@@ -1,40 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book Your Ride</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your E-Rickshaw</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 350px;
+      text-align: center;
+    }
+    .container img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin: 10px 0;
+      color: #222;
+    }
+    p {
+      margin: 0 0 20px;
+      color: #666;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0072ff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fd1;
+    }
+    .success {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center min-h-screen">
-  <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md">
-    <div class="text-center mb-6">
-      <img src="https://img.icons8.com/color/96/taxi.png" class="mx-auto" alt="Taxi Logo">
-      <h1 class="text-2xl font-bold text-gray-800">Book Your Taxi</h1>
-      <p class="text-gray-500">Fast · Safe · Reliable</p>
-    </div>
-
-    <form id="bookingForm" class="space-y-4">
-      <input type="text" id="name" placeholder="Your Name" required
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-      <input type="text" id="pickup" placeholder="Pickup Location" required
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-      <input type="text" id="drop" placeholder="Drop Location" required
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-      <input type="tel" id="phone" placeholder="Phone Number" required
-        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-
-      <button type="submit"
-        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300">
-        🚖 Book Now
-      </button>
+<body>
+  <div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/3097/3097144.png" alt="E-Rickshaw">
+    <h2>Book Your E-Rickshaw</h2>
+    <p>Fast • Safe • Reliable</p>
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="text" id="pickup" placeholder="Pickup Location" required>
+      <input type="text" id="drop" placeholder="Drop Location" required>
+      <input type="text" id="phone" placeholder="Phone Number" required>
+      <button type="submit">🛺 Book Now</button>
     </form>
-
-    <p id="status" class="text-center text-green-600 font-medium mt-4"></p>
+    <div class="success" id="successMessage" style="display:none;">
+      ✅ Booking sent to Telegram!
+    </div>
   </div>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const pickup = document.getElementById('pickup').value;
+      const drop = document.getElementById('drop').value;
+      const phone = document.getElementById('phone').value;
+
+      const message = `🚖 *New E-Rickshaw Booking* 🚖\n\n👤 Name: ${name}\n📍 Pickup: ${pickup}\n🏁 Drop: ${drop}\n📞 Phone: ${phone}`;
+
+      await fetch('/api/send-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('bookingForm').reset();
+    });
+  </script>
 </body>
-<script src="script.js"></script>
 </html>
