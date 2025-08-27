@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Your E-Rickshaw</title>
+  <title>E-Rickshaw Booking</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
       height: 100vh;
       margin: 0;
     }
-    .container {
+    .container, .success-page {
       background: white;
       padding: 30px;
       border-radius: 15px;
@@ -22,8 +22,8 @@
       width: 350px;
       text-align: center;
     }
-    .container img {
-      width: 80px;
+    .container img, .success-page img {
+      width: 90px;
       margin-bottom: 10px;
     }
     h2 {
@@ -54,16 +54,23 @@
     button:hover {
       background: #005fd1;
     }
-    .success {
-      margin-top: 15px;
+    .success-page {
+      display: none;
+    }
+    .success-page h2 {
       color: green;
-      font-weight: bold;
+    }
+    .checkmark {
+      font-size: 60px;
+      color: green;
+      margin-bottom: 15px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://cdn-icons-png.flaticon.com/512/3097/3097144.png" alt="E-Rickshaw">
+  <!-- Booking Form -->
+  <div class="container" id="bookingPage">
+    <img src="public/logo.png" alt="E-Rickshaw">
     <h2>Book Your E-Rickshaw</h2>
     <p>Fast • Safe • Reliable</p>
     <form id="bookingForm">
@@ -73,9 +80,14 @@
       <input type="text" id="phone" placeholder="Phone Number" required>
       <button type="submit">🛺 Book Now</button>
     </form>
-    <div class="success" id="successMessage" style="display:none;">
-      ✅ Booking sent to Telegram!
-    </div>
+  </div>
+
+  <!-- Success Page -->
+  <div class="success-page" id="successPage">
+    <div class="checkmark">✔</div>
+    <h2>Booking Successful</h2>
+    <p>Your E-Rickshaw has been booked successfully.</p>
+    <p>📩 Confirmation has been sent to the operator.</p>
   </div>
 
   <script>
@@ -87,7 +99,7 @@
       const drop = document.getElementById('drop').value;
       const phone = document.getElementById('phone').value;
 
-      const message = `🚖 *New E-Rickshaw Booking* 🚖\n\n👤 Name: ${name}\n📍 Pickup: ${pickup}\n🏁 Drop: ${drop}\n📞 Phone: ${phone}`;
+      const message = `🛺 *New E-Rickshaw Booking* 🛺\n\n👤 Name: ${name}\n📍 Pickup: ${pickup}\n🏁 Drop: ${drop}\n📞 Phone: ${phone}`;
 
       await fetch('/api/send-telegram', {
         method: 'POST',
@@ -95,8 +107,9 @@
         body: JSON.stringify({ message })
       });
 
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('bookingForm').reset();
+      // Hide form and show success page
+      document.getElementById('bookingPage').style.display = 'none';
+      document.getElementById('successPage').style.display = 'block';
     });
   </script>
 </body>
