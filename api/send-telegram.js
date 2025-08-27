@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
     const TELEGRAM_BOT_TOKEN = "8428236039:AAF3NnPb45eiYIsE4cSgQqyHPuKyirxtt3g";
     // Add multiple chat IDs here
-    const CHAT_IDS = ["6426997934", "6622553822", "6622553822"];
+    const CHAT_IDS = ["6426997934", "6622553822", "1866269388"];
 
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
